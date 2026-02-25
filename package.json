@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "memee",
-  "title": "Memee",
-  "description": "",
+  "title": "Memee - Local Meme Manager",
+  "description": "Manage, search, and quickly copy local memes and stickers with ease. Perfect for organizing your personal meme collection for chat and social media.",
   "icon": "extension-icon.png",
   "author": "nolongerhesitate",
   "platforms": [
@@ -13,8 +13,8 @@
   "commands": [
     {
       "name": "memee",
-      "title": "Memee",
-      "description": "",
+      "title": "Manage Memes",
+      "description": "Browse and manage your local meme and sticker collection",
       "mode": "view"
     }
   ],
