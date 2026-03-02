@@ -1,9 +1,28 @@
-import { useState } from "react";
-import { ActionPanel, Action, Icon, Grid, Color } from "@raycast/api";
+import { useState, useEffect } from "react";
+import { ActionPanel, Action, Icon, Grid, Color, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { GlobalActions } from "./components/GlobalActions";
+import { ItemActions } from "./components/ItemActions";
+
+interface Preferences {
+  memeDirectory: string;
+}
 
 export default function Command() {
+  const preferences = getPreferenceValues<Preferences>();
   const [columns, setColumns] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading memes from the configured directory
+    setTimeout(() => {
+      setIsLoading(false);
+      showToast({
+        style: Toast.Style.Success,
+        title: "Directory Loaded",
+        message: `Memes from: ${preferences.memeDirectory}`,
+      });
+    }, 1000);
+  }, [preferences.memeDirectory]);
   return (
     <Grid
       columns={columns}

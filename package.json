@@ -5,6 +5,11 @@
   "description": "Manage, search, and quickly copy local memes and stickers with ease. Perfect for organizing your personal meme collection for chat and social media.",
   "icon": "extension-icon.png",
   "author": "nolongerhesitate",
+  "categories": [
+    "Fun",
+    "Media",
+    "Productivity"
+  ],
   "platforms": [
     "macOS",
     "Windows"
@@ -16,6 +21,16 @@
       "title": "Manage Memes",
       "description": "Browse and manage your local meme and sticker collection",
       "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "memeDirectory",
+      "title": "Meme Directory",
+      "description": "Path to your local meme collection folder",
+      "type": "directory",
+      "required": true,
+      "default": "~/Pictures/Memes"
     }
   ],
   "dependencies": {
