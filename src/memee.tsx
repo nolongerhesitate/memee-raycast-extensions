@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { ActionPanel, Action, Icon, Grid, Color, getPreferenceValues, showToast, Toast } from "@raycast/api";
-import { GlobalActions } from "./components/GlobalActions";
-import { ItemActions } from "./components/ItemActions";
 
 interface Preferences {
   memeDirectory: string;
