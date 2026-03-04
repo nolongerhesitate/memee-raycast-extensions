@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ActionPanel, Action, Icon, Grid, Color, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { scanMemeFolder } from "./utils/fileScanner";
 
 interface Preferences {
   memeDirectory: string;
@@ -9,18 +10,32 @@ export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [columns, setColumns] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
+  const [memes, setMemes] = useState<string[]>([]);
 
   useEffect(() => {
-    // Simulate loading memes from the configured directory
-    setTimeout(() => {
-      setIsLoading(false);
-      showToast({
-        style: Toast.Style.Success,
-        title: "Directory Loaded",
-        message: `Memes from: ${preferences.memeDirectory}`,
-      });
-    }, 1000);
+    const loadMemes = async () => {
+      try {
+        const memeFiles = await scanMemeFolder(preferences.memeDirectory);
+        setMemes(memeFiles);
+        showToast({
+          style: Toast.Style.Success,
+          title: "Directory Loaded",
+          message: `Found ${memeFiles.length} memes from: ${preferences.memeDirectory}`,
+        });
+      } catch (error) {
+        showToast({
+          style: Toast.Style.Failure,
+          title: "Failed to Load Directory",
+          message: error instanceof Error ? error.message : "Unknown error occurred",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadMemes();
   }, [preferences.memeDirectory]);
+
   return (
     <Grid
       columns={columns}
@@ -42,19 +57,21 @@ export default function Command() {
       }
     >
       {!isLoading &&
-        Object.entries(Icon).map(([name, icon]) => (
-          <Grid.Item
-            key={name}
-            content={{ value: { source: icon, tintColor: Color.PrimaryText }, tooltip: name }}
-            title={name}
-            subtitle={icon}
-            actions={
-              <ActionPanel>
-                <Action.CopyToClipboard content={icon} />
-              </ActionPanel>
-            }
-          />
-        ))}
+        memes.map((memeName) => {
+          const memePath = `${preferences.memeDirectory}/${memeName}`;
+          return (
+            <Grid.Item
+              key={memeName}
+              content={{ value: { source: memePath }, tooltip: memeName }}
+              title={memeName}
+              actions={
+                <ActionPanel>
+                  <Action.CopyToClipboard content={memePath} />
+                </ActionPanel>
+              }
+            />
+          );
+        })}
     </Grid>
   );
 }
