@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { Meme } from '../types';
 
 // TODO: 1.Recursive Scan
 // TODO: 2.Mime Types and file filter
@@ -12,14 +13,19 @@ export async function scanMemeFolder(folderPath: string) {
 
     // 2. Read all entries in the directory
     // TODO: Async Iterables, for better performance, learning how to use **Async Iterables**
-    const entries = await fs.readdir(folderPath);
-    console.log(entries);
+    const entries = await fs.readdir(folderPath, { withFileTypes: true });
 
     // 3. Filter out image files (simplified version without recursively scanning subdirectoriess)
     const imageExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
 
     const memes = entries
-      .filter(entry => imageExtensions.includes(path.extname(entry)));
+      .filter(entry => entry.isFile())
+      .filter(entry => imageExtensions.includes(path.extname(entry.name).toLowerCase()))
+      .map(entry => ({
+        name: entry.name,
+        fullPath: path.join(folderPath, entry.name),
+        url: `file://${path.join(folderPath, entry.name)}`
+      }) as Meme);
 
     return memes;
   } catch (error) {

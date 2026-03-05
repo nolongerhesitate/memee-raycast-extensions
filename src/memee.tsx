@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { ActionPanel, Action, Grid, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { Grid, getPreferenceValues, showToast, Toast } from "@raycast/api";
 import { scanMemeFolder } from "./utils/fileScanner";
-import { Preferences } from "./types";
+import { Preferences, Meme } from "./types";
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [columns, setColumns] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
-  const [memes, setMemes] = useState<string[]>([]);
+  const [memes, setMemes] = useState<Meme[]>([]);
 
   useEffect(() => {
     const loadMemes = async () => {
@@ -59,20 +59,14 @@ export default function Command() {
         title="No Memes Found"
         description="Try adding some images to your folder."
       />
-      
+
       {!isLoading &&
-        memes.map((memeName) => {
-          const memePath = `${preferences.memeDirectory}/${memeName}`;
+        memes?.map((meme: Meme) => {
           return (
             <Grid.Item
-              key={memeName}
-              content={{ value: { source: memePath }, tooltip: memeName }}
-              title={memeName}
-              actions={
-                <ActionPanel>
-                  <Action.CopyToClipboard content={memePath} />
-                </ActionPanel>
-              }
+              key={meme.name}
+              content={{ value: { source: meme.fullPath }, tooltip: meme.name }}
+              title={meme.name}
             />
           );
         })}
