@@ -17,7 +17,6 @@ export async function scanMemeFolder(folderPath: string) {
       .filter(entry => imageExtensions.includes(path.extname(entry)));
 
     return memes;
-
   } catch (error) {
     console.error('Failed to scan folder:', error);
     throw new Error("Could not read the meme folder. Please check your permissions.");

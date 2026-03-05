@@ -36,11 +36,13 @@ export default function Command() {
     loadMemes();
   }, [preferences.memeDirectory]);
 
+
   return (
     <Grid
       columns={columns}
-      inset={Grid.Inset.Large}
+      inset={Grid.Inset.Zero}
       isLoading={isLoading}
+      fit={Grid.Fit.Contain}
       searchBarAccessory={
         <Grid.Dropdown
           tooltip="Grid Item Size"
