@@ -1,12 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+// TODO: 1.Recursive Scan
+// TODO: 2.Mime Types and file filter
+// TODO: 3.Performance Pitfalls: The Cost ofMetadata 
 export async function scanMemeFolder(folderPath: string) {
+  // TODO: using the fs.stat to get file info (file size, created time, etc.), and sort by created time.
   try {
     // 1. Check whether the path exists and is readable
     await fs.access(folderPath);
 
     // 2. Read all entries in the directory
+    // TODO: Async Iterables, for better performance, learning how to use **Async Iterables**
     const entries = await fs.readdir(folderPath);
     console.log(entries);
 

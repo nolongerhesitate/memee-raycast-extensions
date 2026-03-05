@@ -26,11 +26,10 @@
   "preferences": [
     {
       "name": "memeDirectory",
+      "type": "directory",
       "title": "Meme Directory",
       "description": "Path to your local meme collection folder",
-      "type": "directory",
-      "required": true,
-      "default": "~/Pictures/Memes"
+      "required": true
     }
   ],
   "dependencies": {
