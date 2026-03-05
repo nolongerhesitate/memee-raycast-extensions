@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
-import { ActionPanel, Action, Icon, Grid, Color, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { ActionPanel, Action, Grid, getPreferenceValues, showToast, Toast } from "@raycast/api";
 import { scanMemeFolder } from "./utils/fileScanner";
-
-interface Preferences {
-  memeDirectory: string;
-}
+import { Preferences } from "./types";
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
