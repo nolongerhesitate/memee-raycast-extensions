@@ -55,6 +55,11 @@ export default function Command() {
         </Grid.Dropdown>
       }
     >
+      <Grid.EmptyView
+        title="No Memes Found"
+        description="Try adding some images to your folder."
+      />
+      
       {!isLoading &&
         memes.map((memeName) => {
           const memePath = `${preferences.memeDirectory}/${memeName}`;
