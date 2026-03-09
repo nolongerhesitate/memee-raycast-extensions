@@ -4,6 +4,7 @@ import { scanMemeFolder } from "./utils/fileScanner";
 import { Preferences, Meme } from "./types";
 import path from 'path';
 
+// TODO: Create the revalidate function returnd by usePromise
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [columns, setColumns] = useState(5);
@@ -35,6 +36,7 @@ export default function Command() {
   }, [preferences.memeDirectory]);
 
 
+  // TODO: Extract logic from UI.
   return (
     <Grid
       columns={columns}
