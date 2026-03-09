@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Grid, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { Grid, getPreferenceValues, showToast, Toast, ActionPanel, Action, Clipboard, open } from "@raycast/api";
 import { scanMemeFolder } from "./utils/fileScanner";
 import { Preferences, Meme } from "./types";
+import path from 'path';
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
@@ -67,6 +68,44 @@ export default function Command() {
               key={meme.name}
               content={{ value: { source: meme.fullPath }, tooltip: meme.name }}
               title={meme.name}
+              actions={
+                <ActionPanel>
+                  <ActionPanel.Section>
+                    <Action
+                      title="Copy Meme"
+                      onAction={async () => {
+                        try {
+                          await Clipboard.copy({ file: meme.fullPath });
+                          await showToast({
+                            style: Toast.Style.Success,
+                            title: "Copied to clipboard",
+                            message: meme.name,
+                          });
+                        } catch (error) {
+                          await showToast({
+                            style: Toast.Style.Failure,
+                            title: "Failed to copy",
+                            message: String(error),
+                          });
+                        }
+                      }}
+                    />
+                    <Action
+                      title="Show in Finder"
+                      shortcut={{ modifiers: ["cmd"], key: "o" }}
+                      onAction={() => open(path.dirname(meme.fullPath))}
+                    />
+                  </ActionPanel.Section>
+
+                  <ActionPanel.Section>
+                    <Action.CopyToClipboard
+                      title="Copy File Path"
+                      content={meme.fullPath}
+                      shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+                    />
+                  </ActionPanel.Section>
+                </ActionPanel>
+              }
             />
           );
         })}
