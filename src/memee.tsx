@@ -5,9 +5,9 @@ import { Preferences, Meme } from "./types";
 import GridItemActionPanel from "./components/GridItemActionPanel";
 
 // TODO: Create the revalidate function returnd by usePromise
+// TODO: Pagination.
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
-  // const [columns, setColumns] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [memes, setMemes] = useState<Meme[]>([]);
   const [extensionFilter, setExtensionFilter] = useState<string>('all');
@@ -46,26 +46,12 @@ export default function Command() {
   }, [memes, extensionFilter])
 
 
-  // TODO: Extract logic from UI:
   return (
     <Grid
-      // columns={columns}
       inset={Grid.Inset.Zero}
       isLoading={isLoading}
       fit={Grid.Fit.Contain}
       searchBarAccessory={
-        // <Grid.Dropdown
-        //   tooltip="Grid Item Size"
-        //   storeValue
-        //   onChange={(newValue) => {
-        //     setColumns(parseInt(newValue));
-        //     setIsLoading(false);
-        //   }}
-        // >
-        //   <Grid.Dropdown.Item title="Large" value={"3"} />
-        //   <Grid.Dropdown.Item title="Medium" value={"5"} />
-        //   <Grid.Dropdown.Item title="Small" value={"8"} />
-        // </Grid.Dropdown>
         <Grid.Dropdown
           tooltip="Filter by Type"
           // Remebers user's last choice
