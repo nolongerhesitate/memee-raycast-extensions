@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Grid, getPreferenceValues, showToast, Toast } from "@raycast/api";
 import { scanMemeFolder } from "./utils/fileScanner";
 import { Preferences, Meme } from "./types";
@@ -7,9 +7,10 @@ import GridItemActionPanel from "./components/GridItemActionPanel";
 // TODO: Create the revalidate function returnd by usePromise
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
-  const [columns, setColumns] = useState(5);
+  // const [columns, setColumns] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [memes, setMemes] = useState<Meme[]>([]);
+  const [extensionFilter, setExtensionFilter] = useState<string>('all');
 
   useEffect(() => {
     const loadMemes = async () => {
@@ -35,26 +36,45 @@ export default function Command() {
     loadMemes();
   }, [preferences.memeDirectory]);
 
+  const filteredMemes = useMemo(() => {
+    if (extensionFilter === 'all') return memes;
+    return memes?.filter(m => {
+      if (extensionFilter === 'gifs') return m.extension === '.gif';
+      if (extensionFilter === 'static') return ['.png', '.jpg', '.jpeg', '.webp'].includes(m.extension);
+      return true;
+    })
+  }, [memes, extensionFilter])
+
 
   // TODO: Extract logic from UI:
   return (
     <Grid
-      columns={columns}
+      // columns={columns}
       inset={Grid.Inset.Zero}
       isLoading={isLoading}
       fit={Grid.Fit.Contain}
       searchBarAccessory={
+        // <Grid.Dropdown
+        //   tooltip="Grid Item Size"
+        //   storeValue
+        //   onChange={(newValue) => {
+        //     setColumns(parseInt(newValue));
+        //     setIsLoading(false);
+        //   }}
+        // >
+        //   <Grid.Dropdown.Item title="Large" value={"3"} />
+        //   <Grid.Dropdown.Item title="Medium" value={"5"} />
+        //   <Grid.Dropdown.Item title="Small" value={"8"} />
+        // </Grid.Dropdown>
         <Grid.Dropdown
-          tooltip="Grid Item Size"
-          storeValue
-          onChange={(newValue) => {
-            setColumns(parseInt(newValue));
-            setIsLoading(false);
-          }}
+          tooltip="Filter by Type"
+          // Remebers user's last choice
+          storeValue={true}
+          onChange={(newValue) => setExtensionFilter(newValue)}
         >
-          <Grid.Dropdown.Item title="Large" value={"3"} />
-          <Grid.Dropdown.Item title="Medium" value={"5"} />
-          <Grid.Dropdown.Item title="Small" value={"8"} />
+          <Grid.Dropdown.Item title='All Images' value="all" />
+          <Grid.Dropdown.Item title="GIFs Only" value="gifs" />
+          <Grid.Dropdown.Item title="Static Images (PNG/JPG)" value='static' />
         </Grid.Dropdown>
       }
     >
@@ -64,7 +84,7 @@ export default function Command() {
       />
 
       {!isLoading &&
-        memes?.map((meme: Meme) => {
+        filteredMemes?.map((meme: Meme) => {
           return (
             <Grid.Item
               key={meme.name}

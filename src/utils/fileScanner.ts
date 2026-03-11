@@ -24,7 +24,8 @@ export async function scanMemeFolder(folderPath: string) {
       .map(entry => ({
         name: entry.name,
         fullPath: path.join(folderPath, entry.name),
-        url: `file://${path.join(folderPath, entry.name)}`
+        url: `file://${path.join(folderPath, entry.name)}`,
+        extension: path.extname(entry.name),
       }) as Meme);
 
     return memes;
