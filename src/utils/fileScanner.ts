@@ -3,10 +3,8 @@ import path from 'path';
 import { Meme } from '../types';
 
 // TODO: 1.Recursive Scan
-// TODO: 2.Mime Types and file filter
 // TODO: 3.Performance Pitfalls: The Cost ofMetadata 
 export async function scanMemeFolder(folderPath: string) {
-  // TODO: using the fs.stat to get file info (file size, created time, etc.), and sort by created time.
   try {
     // 1. Check whether the path exists and is readable
     await fs.access(folderPath);

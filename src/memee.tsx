@@ -5,7 +5,6 @@ import { Preferences, Meme } from "./types";
 import GridItemActionPanel from "./components/GridItemActionPanel";
 
 // TODO: Create the revalidate function returnd by usePromise
-// TODO: Pagination.
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [isLoading, setIsLoading] = useState(true);
