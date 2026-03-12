@@ -4,7 +4,7 @@ export interface Preferences {
 
 export interface Meme {
   name: string;
-  fullPath: string;
+  path: string;
   url: string;
   extension: string;
 }

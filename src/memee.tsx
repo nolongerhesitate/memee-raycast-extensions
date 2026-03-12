@@ -73,7 +73,7 @@ export default function Command() {
           return (
             <Grid.Item
               key={meme.name}
-              content={{ value: { source: meme.fullPath }, tooltip: meme.name }}
+              content={{ value: { source: meme.path }, tooltip: meme.name }}
               title={meme.name}
               actions={<GridItemActionPanel meme={meme} />}
             />

@@ -21,8 +21,8 @@ export async function scanMemeFolder(folderPath: string) {
       .filter(entry => imageExtensions.includes(path.extname(entry.name).toLowerCase()))
       .map(entry => ({
         name: entry.name,
-        fullPath: path.join(folderPath, entry.name),
-        url: `file://${path.join(folderPath, entry.name)}`,
+        path: path.join(folderPath, entry.name),
+        url: `file://${encodeURI(path.join(folderPath, entry.name))}`,
         extension: path.extname(entry.name),
       }) as Meme);
 
