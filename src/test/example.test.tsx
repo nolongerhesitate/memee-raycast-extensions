@@ -20,3 +20,44 @@ describe('Basic Tests', () => {
     expect(asyncFunction).toHaveBeenCalledOnce()
   })
 })
+
+// Function we want to spy on
+const calculator = {
+  add: (a: number, b: number) => a + b,
+  multiply: (a: number, b: number) => a * b,
+}
+
+describe('vi.spyOn example', () => {
+  it('spies on existing method', () => {
+    // Create spy on existing method
+    const addSpy = vi.spyOn(calculator, 'add');
+
+    // Call the method
+    const result = calculator.add(2, 3);
+
+    // Original functino still works
+    expect(result).toBe(5);
+
+    // But wen track calls
+    expect(addSpy).toHaveBeenCalled();
+    expect(addSpy).toHaveBeenCalledWith(2, 3);
+    expect(addSpy).toHaveBeenCalledTimes(1);
+
+    // Clean up
+    addSpy.mockRestore();
+  })
+
+  // With custom return value
+  // Purpose: Control what a function returns while still tracking how it's called - perfect for testing isolated scenarios.
+  it('overrides return value', () => {
+    const multiplySpy = vi.spyOn(calculator, 'multiply')
+      .mockReturnValue(100) // Override return
+
+    const result = calculator.multiply(2, 3);
+
+    expect(result).toBe(100); // Gets mocked value
+    expect(multiplySpy).toHaveBeenCalledWith(2, 3);
+
+    multiplySpy.mockRestore();
+  })
+})
