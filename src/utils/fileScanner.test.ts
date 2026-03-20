@@ -1,10 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { scanMemeFolder } from './fileScanner'
-import fs from 'fs/promises'
 import type { Meme } from '../types'
+import fs from 'fs/promises'
 
 // Mock fs/promises
-vi.mock('fs/promises')
+vi.mock('fs/promises', () => ({
+  default: {
+    access: vi.fn(),
+    readdir: vi.fn(),
+  },
+}))
 
 const mockFs = vi.mocked(fs)
 
